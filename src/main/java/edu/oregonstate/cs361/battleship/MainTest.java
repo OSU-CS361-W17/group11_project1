@@ -1,28 +1,46 @@
+/**
+ * Created by RohanMac on 2/1/17.
+ */
 package edu.oregonstate.cs361.battleship;
 
-import java.util.ArrayList;
-import spark.Request;
-import static spark.Spark.get;
-import static spark.Spark.post;
-import static spark.Spark.staticFiles;
 import com.google.gson.Gson;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import spark.Spark;
+import spark.utils.IOUtils;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static spark.Spark.awaitInitialization;
 
 
-public class Main {
-    public static void main(String[] args) {
-        //This will allow us to server the static pages such as index.html, app.js, etc.
-        staticFiles.location("/public");
-        //This will listen to GET requests to /model and return a clean new model
-        get("/model", (req, res) -> newModel());
-        //This will listen to POST requests and expects to receive a game model, as well as location to fire to
-        post("/fire/:row/:col", (req, res) -> fireAt(req));
-        //This will listen to POST requests and expects to receive a game model, as well as location to place the ship
-        post("/placeShip/:id/:row/:col/:orientation", (req, res) -> placeShip(req));
+/**
+ * Created by michaelhilton on 1/26/17.
+ */
+class MainTest {
+
+    @BeforeAll
+    public static void beforeClass() {
+        Main.main(null);
+        awaitInitialization();
     }
 
-    //This function should return a new model
-    private static String newModel() {
+    @AfterAll
+    public static void afterClass() {
+        Spark.stop();
+    }
 
+    @Test
+    public void testGetModel() {
+        TestResponse res = request("GET", "/model");
+        assertEquals(200, res.status);
         End end = new End(0,0);
         Start start = new Start(0,0);
         End end1 = new End(0,0);
@@ -46,7 +64,6 @@ public class Main {
         End end9 = new End(9,8);
 
 
-
         AircraftCarrier aircraftCarrier = new AircraftCarrier("AircraftCarrier",5,start,end);
         Battleship battleship = new Battleship("Battleship",4,start1,end1);
         Cruiser cruiser = new Cruiser("Cruiser",3,start2,end2);
@@ -58,7 +75,7 @@ public class Main {
         ComputerCruiser computer_cruiser = new ComputerCruiser("Computer_Cruiser",3,start7,end7);
         ComputerDestroyer computer_destroyer = new ComputerDestroyer("Computer_Destroyer",2,start8,end8);
         ComputerSubmarine computer_submarine = new ComputerSubmarine("Computer_Submarine",2,start9,end9);
-        ArrayList<Hits>playerHits = new ArrayList<Hits>();
+        ArrayList<Hits> playerHits = new ArrayList<Hits>();
         ArrayList<Misses>playerMisses = new ArrayList<Misses>();
         ArrayList<Misses>computerMisses = new ArrayList<Misses>();
         ArrayList<Hits>computerHits = new ArrayList<Hits>();
@@ -69,25 +86,47 @@ public class Main {
 
         Gson gson = new Gson();
         String battleshipModelWithJson = gson.toJson(battleshipModel);
-        return battleshipModelWithJson;
+
+        assertEquals(battleshipModelWithJson,res.body);
     }
 
+    @Test
+    /*public void testPlaceShip() {
+        TestResponse res = request("POST", "/placeShip/aircraftCarrier/1/1/horizontal");
+        assertEquals(200, res.status);
+        assertEquals("SHIP",res.body);
+    }*/
 
-    //This function should accept an HTTP request and deseralize it into an actual Java object.
-    private static BattleshipModel getModelFromReq(Request req){
-        return null;
+    private TestResponse request(String method, String path) {
+        try {
+            URL url = new URL("http://localhost:4567" + path);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod(method);
+            connection.setDoOutput(true);
+            connection.connect();
+            String body = IOUtils.toString(connection.getInputStream());
+            return new TestResponse(connection.getResponseCode(), body);
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail("Sending request failed: " + e.getMessage());
+            return null;
+        }
     }
 
-    //This controller should take a json object from the front end, and place the ship as requested, and then return the object.
-   private static String placeShip(Request req) {
-       return "SHIP";
+    private static class TestResponse {
+
+        public final String body;
+        public final int status;
+
+        public TestResponse(int status, String body) {
+            this.status = status;
+            this.body = body;
+        }
+
+        public Map<String,String> json() {
+            return new Gson().fromJson(body, HashMap.class);
+        }
     }
 
-    //Similar to placeShip, but with firing.
-    private static String fireAt(Request req) {
-        return null;
-    }
 
 }
-
-
