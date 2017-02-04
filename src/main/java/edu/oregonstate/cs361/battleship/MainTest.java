@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import spark.Request;
 import spark.Spark;
 import spark.utils.IOUtils;
 
@@ -198,7 +199,7 @@ class MainTest {
                 "    \"computerMisses\": []\n" +
                 "}";
 
-        BattleshipModel battleshipModel = createDefaultModel()
+        BattleshipModel battleshipModel = createDefaultModel();
 
         assertEquals(getModelFromReq(req),battleshipModel);
 
@@ -210,22 +211,22 @@ class MainTest {
         BattleshipModel sampleModel = createDefaultModel();
         // checkHit(int row, int col, BattleshipModel currentModel)
         // hit on the aircraft carrier
-        assertEquals(checkHit(2,3,sampleModel), true);
+        assertEquals(Main.checkHit(2,3,sampleModel), true);
 
         // hit on the battleship
-        assertEquals(checkHit(5,8,sampleModel), true);
+        assertEquals(Main.checkHit(5,8,sampleModel), true);
 
         // hit on the cruiser
-        assertEquals(checkHit(4,2,sampleModel), true);
+        assertEquals(Main.checkHit(4,2,sampleModel), true);
 
         // hit on the destroyer
-        assertEquals(checkHit(7,3,sampleModel), true);
+        assertEquals(Main.checkHit(7,3,sampleModel), true);
 
         // hit on the submarine
-        assertEquals(checkHit(9,7,sampleModel), true);
+        assertEquals(Main.checkHit(9,7,sampleModel), true);
 
         // miss
-        assertEquals(checkHit(1,1,sampleModel), false);
+        assertEquals(Main.checkHit(1,1,sampleModel), false);
 
     }
 
