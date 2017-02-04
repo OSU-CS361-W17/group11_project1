@@ -135,7 +135,7 @@ public class Main {
 
     // this function takes in the row and column user is firing at as well as the current model (as an object) and returns
     // true if it is a hit, and false if it is not
-    private static boolean checkHit(int row, int col, BattleshipModel currentModel){
+    public static boolean checkHit(int row, int col, BattleshipModel currentModel){
         boolean hit = false;
 
         //check if it is a hit on the computer's aircraft carrier
@@ -262,7 +262,7 @@ public class Main {
         Gson gson = new Gson();
         String CurrentStateJson = gson.toJson(currentModel);
 
-        return CurrentStateJson;
+        // return CurrentStateJson;
         return hit;
 
     }
