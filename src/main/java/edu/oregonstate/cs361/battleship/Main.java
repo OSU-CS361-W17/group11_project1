@@ -107,58 +107,13 @@ public class Main {
 
 
         //determine whether it is a hit or a miss
-        boolean hit = false;
-
-        //check if it is a hit on the computer's aircraft carrier
-        if ((currentModel.computerAircraftCarrier.start.Across <= col) && (col <= currentModel.computerAircraftCarrier.end.Across)){
-            if ((currentModel.computerAircraftCarrier.start.Down <= row) && (row <= currentModel.computerAircraftCarrier.start.Down))
-            {
-                //it's a hit on the aircraft carrier
-                hit = true;
-            }
-        }
-
-        //check if it's a hit on the battleship
-        if ((currentModel.computerBattleship.start.Across <= col) && (col <= currentModel.computerBattleship.end.Across)){
-            if ((currentModel.computerBattleship.start.Down <= row) && (row <= currentModel.computerBattleship.start.Down))
-            {
-                //it's a hit on the battleship
-                hit = true;
-            }
-        }
-
-        //check if it's a hit on the cruiser
-        if ((currentModel.computerCruiser.start.Across <= col) && (col <= currentModel.computerCruiser.end.Across)){
-            if ((currentModel.computerCruiser.start.Down <= row) && (row <= currentModel.computerCruiser.start.Down))
-            {
-                //it's a hit on the cruiser
-                hit = true;
-            }
-        }
-
-        //check if it's a hit on the destroyer;
-        if ((currentModel.computerDestroyer.start.Across <= col) && (col <= currentModel.computerDestroyer.end.Across)){
-            if ((currentModel.computerDestroyer.start.Down <= row) && (row <= currentModel.computerDestroyer.start.Down))
-            {
-                //it's a hit on the destroyer
-                hit = true;
-            }
-        }
-
-                //check if it's a hit on th submarine
-        if ((currentModel.computerSubmarine.start.Across <= col) && (col <= currentModel.computerSubmarine.end.Across)){
-            if ((currentModel.computerSubmarine.start.Down <= row) && (row <= currentModel.computerSubmarine.start.Down))
-            {
-                //it's a hit on the submarine
-                hit = true;
-            }
-        }
+        boolean hit = checkHit(row, col, currentModel);
 
         if (!hit){
            //record as a miss
             Misses miss = new Misses(row, col);
             currentModel.computerMisses.add(miss);
-        } else if (hit) {
+        } else {
             Hits hit1 = new Hits(row, col);
             currentModel.computerHits.add(hit1);
         }
@@ -168,6 +123,59 @@ public class Main {
         String CurrentStateJson = gson.toJson(currentModel);
 
         return CurrentStateJson;
+    }
+
+    // this function takes in the row and column user is firing at as well as the current model (as an object) and returns
+    // true if it is a hit, and false if it is not
+    private static boolean checkHit(int row, int col, BattleshipModel currentModel){
+        boolean hit = false;
+
+        //check if it is a hit on the computer's aircraft carrier
+        if ((currentModel.computerAircraftCarrier.start.Across <= col) && (col <= currentModel.computerAircraftCarrier.end.Across)){
+            if ((currentModel.computerAircraftCarrier.start.Down <= row) && (row <= currentModel.computerAircraftCarrier.end.Down))
+            {
+                //it's a hit on the aircraft carrier
+                hit = true;
+            }
+        }
+
+        //check if it's a hit on the battleship
+        if ((currentModel.computerBattleship.start.Across <= col) && (col <= currentModel.computerBattleship.end.Across)){
+            if ((currentModel.computerBattleship.start.Down <= row) && (row <= currentModel.computerBattleship.end.Down))
+            {
+                //it's a hit on the battleship
+                hit = true;
+            }
+        }
+
+        //check if it's a hit on the cruiser
+        if ((currentModel.computerCruiser.start.Across <= col) && (col <= currentModel.computerCruiser.end.Across)){
+            if ((currentModel.computerCruiser.start.Down <= row) && (row <= currentModel.computerCruiser.end.Down))
+            {
+                //it's a hit on the cruiser
+                hit = true;
+            }
+        }
+
+        //check if it's a hit on the destroyer;
+        if ((currentModel.computerDestroyer.start.Across <= col) && (col <= currentModel.computerDestroyer.end.Across)){
+            if ((currentModel.computerDestroyer.start.Down <= row) && (row <= currentModel.computerDestroyer.end.Down))
+            {
+                //it's a hit on the destroyer
+                hit = true;
+            }
+        }
+
+        //check if it's a hit on th submarine
+        if ((currentModel.computerSubmarine.start.Across <= col) && (col <= currentModel.computerSubmarine.end.Across)){
+            if ((currentModel.computerSubmarine.start.Down <= row) && (row <= currentModel.computerSubmarine.end.Down))
+            {
+                //it's a hit on the submarine
+                hit = true;
+            }
+        }
+
+        return hit;
     }
 
 }

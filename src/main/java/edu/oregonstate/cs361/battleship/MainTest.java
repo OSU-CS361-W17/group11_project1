@@ -197,6 +197,39 @@ class MainTest {
                 "    \"computerHits\": [],\n" +
                 "    \"computerMisses\": []\n" +
                 "}";
+
+        BattleshipModel battleshipModel = createDefaultModel()
+
+        assertEquals(getModelFromReq(req),battleshipModel);
+
+        return;
+    }
+
+    @Test
+    public void testFiring() {
+        BattleshipModel sampleModel = createDefaultModel();
+        // checkHit(int row, int col, BattleshipModel currentModel)
+        // hit on the aircraft carrier
+        assertEquals(checkHit(2,3,sampleModel), true);
+
+        // hit on the battleship
+        assertEquals(checkHit(5,8,sampleModel), true);
+
+        // hit on the cruiser
+        assertEquals(checkHit(4,2,sampleModel), true);
+
+        // hit on the destroyer
+        assertEquals(checkHit(7,3,sampleModel), true);
+
+        // hit on the submarine
+        assertEquals(checkHit(9,7,sampleModel), true);
+
+        // miss
+        assertEquals(checkHit(1,1,sampleModel), false);
+
+    }
+
+    public BattleshipModel createDefaultModel(){
         End end = new End(0,0);
         Start start = new Start(0,0);
         End end1 = new End(0,0);
@@ -240,8 +273,6 @@ class MainTest {
                 computer_aircraftCarrier,computer_battleship,computer_cruiser,computer_destroyer,computer_submarine,
                 playerHits,playerMisses,computerHits,computerMisses);
 
-        assertEquals(getModelFromReq(req),battleshipModel);
-
-        return;
+        return battleshipModel;
     }
 }
