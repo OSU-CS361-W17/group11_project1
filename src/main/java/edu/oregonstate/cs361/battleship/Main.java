@@ -1,6 +1,7 @@
 package edu.oregonstate.cs361.battleship;
 
 import java.util.ArrayList;
+import java.util.Random;
 import spark.Request;
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -90,6 +91,13 @@ public class Main {
 
     //This controller should take a json object from the front end, and place the ship as requested, and then return the object.
    private static String placeShip(Request req) {
+        BattleshipModel currentModel = getModelFromReq(req);
+
+        int rows = Integer.parseInt(req.params(row));
+        int col = Integer.parseInt(req.params(col));
+
+        BattleshipModel placeModel = getModelFromReq(req);
+
 
 
         return "SHIP";
@@ -175,7 +183,88 @@ public class Main {
             }
         }
 
+
+        if (!hit){
+           //record as a miss
+            Misses miss = new Misses(row, col);
+            currentModel.computerMisses.add(miss);
+            System.out.println("You missed!");
+        } else if (hit) {
+            Hits hit1 = new Hits(row, col);
+            currentModel.computerHits.add(hit1);
+            System.out.println("That was a hit");
+        }
+
+        //Hit for AI to user
+        int airow, aicol;
+        boolean aihit = false;
+
+        airow = rn.nextInt(10) + 1;
+        aicol = rn.nextInt(10) + 1;
+
+        //check if it is a hit on the computer's aircraft carrier
+        if ((currentModel.AircraftCarrier.start.Across <= aicol) && (aicol <= currentModel.AircraftCarrier.end.Across)){
+            if ((currentModel.AircraftCarrier.start.Down <= airow) && (airow <= currentModel.AircraftCarrier.end.Down))
+            {
+                //it's a hit on the aircraft carrier
+                aihit = true;
+            }
+        }
+
+        //check if it's a hit on the battleship
+        if ((currentModel.Battleship.start.Across <= aicol) && (aicol <= currentModel.Battleship.end.Across)){
+            if ((currentModel.Battleship.start.Down <= airow) && (airow <= currentModel.Battleship.end.Down))
+            {
+                //it's a hit on the battleship
+                aihit = true;
+            }
+        }
+
+        //check if it's a hit on the cruiser
+        if ((currentModel.Cruiser.start.Across <= aicol) && (aicol <= currentModel.Cruiser.end.Across)){
+            if ((currentModel.Cruiser.start.Down <= airow) && (airow <= currentModel.Cruiser.end.Down))
+            {
+                //it's a hit on the cruiser
+                aihit = true;
+            }
+        }
+
+        //check if it's a hit on the destroyer;
+        if ((currentModel.Destroyer.start.Across <= aicol) && (aicol <= currentModel.Destroyer.end.Across)){
+            if ((currentModel.Destroyer.start.Down <= airow) && (airow <= currentModel.Destroyer.end.Down))
+            {
+                //it's a hit on the destroyer
+                aihit = true;
+            }
+        }
+
+                //check if it's a hit on th submarine
+        if ((currentModel.Submarine.start.Across <= aicol) && (aicol <= currentModel.Submarine.end.Across)){
+            if ((currentModel.Submarine.start.Down <= airow) && (airow <= currentModel.Submarine.end.Down))
+            {
+                //it's a hit on the submarine
+                aihit = true;
+            }
+        }
+
+        if (!aihit){
+           //record as a miss
+            Misses aimiss = new Misses(airow, aicol);
+            currentModel.Misses.add(aimiss);
+            System.out.println("The computer missed!");
+        } else if (aihit) {
+            Hits aihit1 = new Hits(airow, aicol);
+            currentModel.Hits.add(aihit1);
+            System.out.println("The computer hit");
+        }
+
+        //return the updated battleship model as a string (json)
+        Gson gson = new Gson();
+        String CurrentStateJson = gson.toJson(currentModel);
+
+        return CurrentStateJson;
         return hit;
+
     }
 
 }
