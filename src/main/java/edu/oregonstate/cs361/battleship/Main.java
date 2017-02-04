@@ -182,7 +182,7 @@ public class Main {
 
         //check if it is a hit on the computer's aircraft carrier
         if ((currentModel.AircraftCarrier.start.Across <= aicol) && (aicol <= currentModel.AircraftCarrier.end.Across)){
-            if ((currentModel.AircraftCarrier.start.Down <= airow) && (airow <= currentModel.AircraftCarrier.start.Down))
+            if ((currentModel.AircraftCarrier.start.Down <= airow) && (airow <= currentModel.AircraftCarrier.end.Down))
             {
                 //it's a hit on the aircraft carrier
                 aihit = true;
@@ -191,7 +191,7 @@ public class Main {
 
         //check if it's a hit on the battleship
         if ((currentModel.Battleship.start.Across <= aicol) && (aicol <= currentModel.Battleship.end.Across)){
-            if ((currentModel.Battleship.start.Down <= airow) && (airow <= currentModel.Battleship.start.Down))
+            if ((currentModel.Battleship.start.Down <= airow) && (airow <= currentModel.Battleship.end.Down))
             {
                 //it's a hit on the battleship
                 aihit = true;
@@ -200,7 +200,7 @@ public class Main {
 
         //check if it's a hit on the cruiser
         if ((currentModel.Cruiser.start.Across <= aicol) && (aicol <= currentModel.Cruiser.end.Across)){
-            if ((currentModel.Cruiser.start.Down <= airow) && (airow <= currentModel.Cruiser.start.Down))
+            if ((currentModel.Cruiser.start.Down <= airow) && (airow <= currentModel.Cruiser.end.Down))
             {
                 //it's a hit on the cruiser
                 aihit = true;
@@ -209,7 +209,7 @@ public class Main {
 
         //check if it's a hit on the destroyer;
         if ((currentModel.Destroyer.start.Across <= aicol) && (aicol <= currentModel.Destroyer.end.Across)){
-            if ((currentModel.Destroyer.start.Down <= airow) && (airow <= currentModel.Destroyer.start.Down))
+            if ((currentModel.Destroyer.start.Down <= airow) && (airow <= currentModel.Destroyer.end.Down))
             {
                 //it's a hit on the destroyer
                 aihit = true;
@@ -218,7 +218,7 @@ public class Main {
 
                 //check if it's a hit on th submarine
         if ((currentModel.Submarine.start.Across <= aicol) && (aicol <= currentModel.Submarine.end.Across)){
-            if ((currentModel.Submarine.start.Down <= airow) && (airow <= currentModel.Submarine.start.Down))
+            if ((currentModel.Submarine.start.Down <= airow) && (airow <= currentModel.Submarine.end.Down))
             {
                 //it's a hit on the submarine
                 aihit = true;
