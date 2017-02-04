@@ -90,6 +90,13 @@ public class Main {
 
     //This controller should take a json object from the front end, and place the ship as requested, and then return the object.
    private static String placeShip(Request req) {
+        BattleshipModel currentModel = getModelFromReq(req);
+
+        int rows = Integer.parseInt(req.params(row));
+        int col = Integer.parseInt(req.params(col));
+
+        BattleshipModel placeModel = getModelFromReq(req);
+
 
 
         return "SHIP";
@@ -158,9 +165,11 @@ public class Main {
            //record as a miss
             Misses miss = new Misses(row, col);
             currentModel.computerMisses.add(miss);
+            System.out.println("You missed!");
         } else if (hit) {
             Hits hit1 = new Hits(row, col);
             currentModel.computerHits.add(hit1);
+            System.out.println("That was a hit");
         }
 
         //return the updated battleship model as a string (json)
