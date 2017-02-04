@@ -262,7 +262,7 @@ public class Main {
         Gson gson = new Gson();
         String CurrentStateJson = gson.toJson(currentModel);
 
-        return CurrentStateJso
+        return CurrentStateJson;
         return hit;
 
     }
